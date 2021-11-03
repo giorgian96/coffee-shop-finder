@@ -1,0 +1,36 @@
+.inputContainer{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  margin: 30px;
+
+  font-family: 'Courier New', Courier, monospace;
+
+  padding: 25px;
+  border: 1px solid #3b3b3b;
+  border-radius: 5px;
+  box-shadow: 5px 5px 5px 0px rgba(59,59,59,0.5);
+}
+
+.inputContainer .inputElement{
+  margin-bottom: 20px;
+}
+
+.inputElement label{
+  display: block;
+}
+
+.inputElement .coordsInput{
+  padding: 8px;
+  width: 250px;
+}
+
+.inputElement .submitBtn{
+  padding: 10px;
+  background-color: cornflowerblue;
+  color: white;
+  border: none;
+  border-radius: 5px;
+}
