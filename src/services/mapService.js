@@ -17,47 +17,56 @@ export const mapService = {
     return this.mapSettings.defaultHeight * this.mapSettings.scale;
   },
 
-  translateLongitudeToCanvasPx(longitude){
-    let x = (longitude + this.mapSettings.defaultWidth / 2) * this.mapSettings.scale;
-    return x;
+  mapLongitudeToPx(longitude){
+    return (longitude + this.mapSettings.defaultWidth / 2) * this.mapSettings.scale;
   },
 
-  translateLatitudeToCanvasPx(latitude){
-    let y = ((this.mapSettings.defaultHeight / 2) - latitude) * this.mapSettings.scale;
-    return y;
+  mapLatitudeToPx(latitude){
+    return ((this.mapSettings.defaultHeight / 2) - latitude) * this.mapSettings.scale;
   },
 
-  initMap(){
+  drawMap(userLocation, coffeeShopLocations){
     const mapCanvas = this.getMapElement();
     const ctx = mapCanvas.getContext("2d");
     ctx.canvas.width = this.getMapWidth();
     ctx.canvas.height = this.getMapHeight();
 
     // draw some coffee shops
-    this.drawCoffeeShopAt(ctx, this.translateLongitudeToCanvasPx(25), this.translateLatitudeToCanvasPx(45));
-    this.drawCoffeeShopAt(ctx, this.translateLongitudeToCanvasPx(150), this.translateLatitudeToCanvasPx(30));
-    this.drawCoffeeShopAt(ctx, this.translateLongitudeToCanvasPx(-100), this.translateLatitudeToCanvasPx(50));
-    this.drawCoffeeShopAt(ctx, this.translateLongitudeToCanvasPx(-60), this.translateLatitudeToCanvasPx(-30));
+    for(const coffeeShop of coffeeShopLocations){
+      this.drawCoffeeShopAt(ctx, coffeeShop.latitude, coffeeShop.longitude);
+    }
 
     // draw user's location
-    this.drawUserLocation(ctx, this.translateLongitudeToCanvasPx(25), this.translateLatitudeToCanvasPx(45));
+    this.drawUserLocation(ctx, userLocation.latitude, userLocation.longitude);
   },
 
-  drawCoffeeShopAt(ctx, xLon, yLat) {
+  drawCoffeeShopAt(ctx, latitude, longitude) {
+    // Map api longitude and latitude to canvas x and y
+    const xLon = this.mapLongitudeToPx(longitude);
+    const yLat = this.mapLatitudeToPx(latitude);
+
+    const size = 7;
+
     ctx.beginPath();
 
-    ctx.moveTo(xLon - 10, yLat - 10);
-    ctx.lineTo(xLon + 10, yLat + 10);
+    ctx.moveTo(xLon - size, yLat - size);
+    ctx.lineTo(xLon + size, yLat + size);
 
-    ctx.moveTo(xLon + 10, yLat - 10);
-    ctx.lineTo(xLon - 10, yLat + 10);
+    ctx.moveTo(xLon + size, yLat - size);
+    ctx.lineTo(xLon - size, yLat + size);
     ctx.stroke();
   },
 
-  drawUserLocation(ctx, xLon, yLat){
+  drawUserLocation(ctx, latitude, longitude){
+    // Map api longitude and latitude to canvas x and y
+    const xLon = this.mapLongitudeToPx(longitude);
+    const yLat = this.mapLatitudeToPx(latitude);
+
+    const size = 5;
+
     ctx.fillStyle = "#ff0000";
     ctx.beginPath();
-    ctx.arc(xLon, yLat, 10, 0, 2 * Math.PI);
+    ctx.arc(xLon, yLat, size, 0, 2 * Math.PI);
     ctx.fill();
   }
 }
