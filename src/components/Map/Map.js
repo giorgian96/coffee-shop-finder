@@ -9,15 +9,10 @@ const Map = () => {
     longitude: 25
   });
 
-  const [coffeeShops, setCoffeeShops] = useState([])
+  const [coffeeShops, setCoffeeShops] = useState([]);
 
   useEffect(() => {
-    async function validateAndFetchData(){      
-      if (apiService.validateValues(userPosition.latitude, userPosition.longitude)) {
-        setCoffeeShops(await apiService.getNearestShops(userPosition));
-      }
-    }
-    validateAndFetchData();
+    validateAndFetchData(userPosition, setCoffeeShops);
 
     mapService.drawMap(userPosition, coffeeShops);
   }, [userPosition, coffeeShops]);
@@ -25,6 +20,12 @@ const Map = () => {
   return (
     <canvas id="map" className="map"></canvas>
   )
+}
+
+async function validateAndFetchData(userPosition, setCoffeeShopsFn){      
+  if (apiService.validateCoordinates(userPosition.latitude, userPosition.longitude)) {
+    setCoffeeShopsFn(await apiService.getNearestShops(userPosition));
+  }
 }
 
 export default Map

@@ -43,7 +43,7 @@ export const apiService = {
   },
 
   async retrieveNewToken() {
-    let response = await fetch(`${this.BASE_API_URL}${this.GET_TOKEN}`, {
+    const response = await fetch(`${this.BASE_API_URL}${this.GET_TOKEN}`, {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
@@ -59,7 +59,7 @@ export const apiService = {
     }
   },
 
-  validateValues(latitude, longitude) {
+  validateCoordinates(latitude, longitude) {
     if (Number.isNaN(latitude) || Number.isNaN(longitude)) {
       console.error("The latitude and longitude need to be numbers");
       return false;
