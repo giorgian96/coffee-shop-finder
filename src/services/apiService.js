@@ -70,4 +70,9 @@ export const apiService = {
       return true;
     }
   },
+
+  distanceBetween(pointA, pointB){
+    debugger;
+    return (Math.sqrt((pointA.x - pointB.x) ** 2 + (pointA.y - pointB.y) ** 2)).toFixed(4);
+  }
 }

@@ -34,7 +34,7 @@ export const mapService = {
 
     // draw the coffee shops
     for(const coffeeShop of coffeeShopLocations){
-      this.drawCoffeeShopAt(ctx, coffeeShop.latitude, coffeeShop.longitude);
+      this.drawCoffeeShopAt(ctx, coffeeShop);
     }
 
     // set canvas context
@@ -44,12 +44,18 @@ export const mapService = {
     // this.drawUserLocation(ctx, userLocation.latitude, userLocation.longitude);
   },
 
-  drawCoffeeShopAt(ctx, latitude, longitude) {
+  drawCoffeeShopAt(ctx, coffeeShop) {
     // Map api longitude and latitude to canvas x and y
-    const xLon = this.mapLongitudeToPx(longitude);
-    const yLat = this.mapLatitudeToPx(latitude);
+    const xLon = this.mapLongitudeToPx(coffeeShop.longitude);
+    const yLat = this.mapLatitudeToPx(coffeeShop.latitude);
 
     const size = 7;
+
+    ctx.fillStyle = "#000000";
+
+    if(coffeeShop.isHighlighted){
+      ctx.fillStyle = "#0000ff";
+    }
 
     ctx.beginPath();
 
