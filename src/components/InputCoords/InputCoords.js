@@ -1,3 +1,4 @@
+import { apiService } from '../../services/apiService';
 import './InputCoords.css';
 
 const InputCoords = ({transmitUserCoords}) => {
@@ -14,8 +15,15 @@ const InputCoords = ({transmitUserCoords}) => {
       <div className="inputElement">
         <button className="submitBtn" onClick={(e) => {
           e.preventDefault();
-          let latitude = document.getElementById('latitudeInput').value;
-          let longitude = document.getElementById('longitudeInput').value;
+          let latitude = parseFloat(document.getElementById('latitudeInput').value);
+          let longitude = parseFloat(document.getElementById('longitudeInput').value);
+
+          if(apiService.validateCoordinates(latitude, longitude)){
+            transmitUserCoords(latitude, longitude);
+
+            document.getElementById('latitudeInput').value = "";
+            document.getElementById('longitudeInput').value = "";
+          }
         }}>Submit</button>
       </div>
     </div>

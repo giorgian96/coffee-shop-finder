@@ -2,7 +2,8 @@ export const mapService = {
   mapSettings: {
     defaultWidth: 360,
     defaultHeight: 180,
-    scale: 1.5
+    scale: 1.5,
+    canvasCtx: null
   },
 
   getMapElement(){
@@ -25,19 +26,22 @@ export const mapService = {
     return ((this.mapSettings.defaultHeight / 2) - latitude) * this.mapSettings.scale;
   },
 
-  drawMap(userLocation, coffeeShopLocations){
+  initMap(coffeeShopLocations){
     const mapCanvas = this.getMapElement();
     const ctx = mapCanvas.getContext("2d");
     ctx.canvas.width = this.getMapWidth();
     ctx.canvas.height = this.getMapHeight();
 
-    // draw some coffee shops
+    // draw the coffee shops
     for(const coffeeShop of coffeeShopLocations){
       this.drawCoffeeShopAt(ctx, coffeeShop.latitude, coffeeShop.longitude);
     }
 
+    // set canvas context
+    this.mapSettings.canvasCtx = ctx;
+
     // draw user's location
-    this.drawUserLocation(ctx, userLocation.latitude, userLocation.longitude);
+    // this.drawUserLocation(ctx, userLocation.latitude, userLocation.longitude);
   },
 
   drawCoffeeShopAt(ctx, latitude, longitude) {
@@ -57,12 +61,13 @@ export const mapService = {
     ctx.stroke();
   },
 
-  drawUserLocation(ctx, latitude, longitude){
+  drawUserLocation(userLocation){
     // Map api longitude and latitude to canvas x and y
-    const xLon = this.mapLongitudeToPx(longitude);
-    const yLat = this.mapLatitudeToPx(latitude);
+    const xLon = this.mapLongitudeToPx(userLocation.longitude);
+    const yLat = this.mapLatitudeToPx(userLocation.latitude);
 
     const size = 5;
+    const ctx = this.mapSettings.canvasCtx;
 
     ctx.fillStyle = "#ff0000";
     ctx.beginPath();

@@ -60,7 +60,7 @@ export const apiService = {
   },
 
   validateCoordinates(latitude, longitude) {
-    if (Number.isNaN(latitude) || Number.isNaN(longitude)) {
+    if (isNaN(latitude) || isNaN(longitude)) {
       console.error("The latitude and longitude need to be numbers");
       return false;
     } else if (Math.abs(latitude) > 90 || Math.abs(longitude) > 180) {
