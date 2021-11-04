@@ -1,27 +1,31 @@
 import './Map.css';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { mapService } from '../../services/mapService';
+import { apiService } from '../../services/apiService';
 
 const Map = () => {
+  const [userPosition, setUserPosition] = useState({
+    latitude: 45,
+    longitude: 25
+  });
+
+  const [coffeeShops, setCoffeeShops] = useState([]);
+
   useEffect(() => {
-    mapService.drawMap(
-      {
-        latitude: 45,
-        longitude: 25
-      },
-      [
-        {latitude: 50, longitude: 5},
-        {latitude: 40, longitude: -60},
-        {latitude: -30, longitude: -50},
-        {latitude: 0, longitude: 0},
-        {latitude: -80, longitude: 20}
-      ]
-    );
-  }, []);
+    validateAndFetchData(userPosition, setCoffeeShops);
+
+    mapService.drawMap(userPosition, coffeeShops);
+  }, [userPosition, coffeeShops]);
 
   return (
     <canvas id="map" className="map"></canvas>
   )
+}
+
+async function validateAndFetchData(userPosition, setCoffeeShopsFn){      
+  if (apiService.validateCoordinates(userPosition.latitude, userPosition.longitude)) {
+    setCoffeeShopsFn(await apiService.getNearestShops(userPosition));
+  }
 }
 
 export default Map
